@@ -10,10 +10,7 @@ import javax.inject.Inject
 
 class JobsRepositoryImpl @Inject constructor(private val apiService: ApiService) {
     fun getAllJobs() = Pager(
-        config = PagingConfig(pageSize = 15, maxSize = 50),
+        config = PagingConfig(pageSize = 10, maxSize = 100),
         pagingSourceFactory = { JobsPagingSource(apiService) }
     ).liveData
-
-
-
 }

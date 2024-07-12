@@ -11,6 +11,7 @@ import androidx.core.text.HtmlCompat
 import com.geeklord.jobsapp.Models.JobDetails
 import com.geeklord.jobsapp.Models.PrimaryDetails
 import com.geeklord.jobsapp.databinding.FragmentDetailsBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,6 +53,9 @@ class DetailsFragment : Fragment() {
                 binding.tvJobRole.text = "Job Role : ${item.jobRole}"
 
             }
+        }
+        else{
+            Snackbar.make(binding.root, "Something went wrong!", Snackbar.LENGTH_SHORT).show()
         }
     }
 

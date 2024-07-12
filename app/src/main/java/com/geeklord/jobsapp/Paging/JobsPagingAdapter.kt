@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.geeklord.jobsapp.Models.JobDetails
 import com.geeklord.jobsapp.Models.PrimaryDetails
 import com.geeklord.jobsapp.databinding.JobItemBinding
+import com.google.android.material.snackbar.Snackbar
 
 class JobsPagingAdapter(private val onClick : (JobDetails) -> Unit) : PagingDataAdapter<JobDetails, JobsPagingAdapter.JobsViewHolder> (ComparatorDiffUtil()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobsViewHolder {
@@ -29,6 +30,7 @@ class JobsPagingAdapter(private val onClick : (JobDetails) -> Unit) : PagingData
 
             binding.root.setOnClickListener{
                 onClick(result)
+
             }
         }
 
