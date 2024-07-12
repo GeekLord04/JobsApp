@@ -1,5 +1,6 @@
 package com.geeklord.jobsapp.View
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,11 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.geeklord.jobsapp.Models.JobDetails
+import com.geeklord.jobsapp.Models.PrimaryDetails
 import com.geeklord.jobsapp.Paging.JobsPagingAdapter
+import com.geeklord.jobsapp.R
 import com.geeklord.jobsapp.Utils.Constants.TAG
 import com.geeklord.jobsapp.ViewModels.JobsViewModel
 import com.geeklord.jobsapp.databinding.FragmentJobsBinding
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +43,7 @@ class JobsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        adapter = JobsPagingAdapter()
+        adapter = JobsPagingAdapter(::onItemClicked)
         binding.jobsRecyclerView.layoutManager = LinearLayoutManager(context,
             LinearLayoutManager.VERTICAL,false)
         binding.jobsRecyclerView.adapter = adapter
@@ -47,6 +53,12 @@ class JobsFragment : Fragment() {
             adapter.submitData(lifecycle, it)
             Log.d(TAG, "onViewCreated: $it")
         }
+    }
+
+    private fun onItemClicked(jobsData : JobDetails){
+        val bundle = Bundle();
+        bundle.putString("jobData", Gson().toJson(jobsData))
+        findNavController().navigate(R.id.action_jobsFragment_to_detailsFragment,bundle)
     }
 
     override fun onDestroy() {

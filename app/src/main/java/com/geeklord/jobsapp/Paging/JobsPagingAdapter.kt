@@ -6,9 +6,10 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.geeklord.jobsapp.Models.JobDetails
+import com.geeklord.jobsapp.Models.PrimaryDetails
 import com.geeklord.jobsapp.databinding.JobItemBinding
 
-class JobsPagingAdapter : PagingDataAdapter<JobDetails, JobsPagingAdapter.JobsViewHolder> (ComparatorDiffUtil()){
+class JobsPagingAdapter(private val onClick : (JobDetails) -> Unit) : PagingDataAdapter<JobDetails, JobsPagingAdapter.JobsViewHolder> (ComparatorDiffUtil()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobsViewHolder {
         val binding = JobItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return JobsViewHolder(binding)
@@ -21,11 +22,17 @@ class JobsPagingAdapter : PagingDataAdapter<JobDetails, JobsPagingAdapter.JobsVi
         }
     }
 
-    class JobsViewHolder(private val binding: JobItemBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class JobsViewHolder(private val binding: JobItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(result: JobDetails) {
             binding.jobTitle.text = result.title
             binding.jobCompany.text = result.companyName
+
+            binding.root.setOnClickListener{
+                onClick(result)
+            }
         }
+
+
 
     }
 
