@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.geeklord.jobsapp.databinding.FragmentSavedJobsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SavedJobsFragment : Fragment() {
 
     private var _binding : FragmentSavedJobsBinding? = null

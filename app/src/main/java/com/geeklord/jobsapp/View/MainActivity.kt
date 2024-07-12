@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     private fun ActivityMainBinding.setUpBottomNavigation() {
         val bottomNavigationItems = mutableListOf(
             CurvedBottomNavigation.Model(JOBS_ITEM, "Jobs", R.drawable.jobs_icon),
-            CurvedBottomNavigation.Model(SAVED_ITEM, "Saved Jobs", R.drawable.bookmark_icon)
+            CurvedBottomNavigation.Model(SAVED_ITEM, "Bookmarks", R.drawable.bookmark_icon)
 
         )
         bottomNavigation.apply {
