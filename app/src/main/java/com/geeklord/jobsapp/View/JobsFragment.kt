@@ -43,7 +43,7 @@ class JobsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        adapter = JobsPagingAdapter(::onItemClicked)
+        adapter = JobsPagingAdapter(::onItemClicked, jobsViewModel)
         binding.jobsRecyclerView.layoutManager = LinearLayoutManager(context,
             LinearLayoutManager.VERTICAL,false)
         binding.jobsRecyclerView.adapter = adapter
@@ -58,7 +58,9 @@ class JobsFragment : Fragment() {
     private fun onItemClicked(jobsData : JobDetails){
         val bundle = Bundle();
         bundle.putString("jobData", Gson().toJson(jobsData))
+        bundle.putString("source","JobsFragment")
         findNavController().navigate(R.id.action_jobsFragment_to_detailsFragment,bundle)
+
     }
 
     override fun onDestroy() {

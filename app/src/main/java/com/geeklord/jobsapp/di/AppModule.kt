@@ -1,10 +1,15 @@
 package com.geeklord.jobsapp.di
 
+import android.content.Context
+import androidx.room.Room
 import com.geeklord.jobsapp.Utils.Constants.BASE_URL
 import com.geeklord.jobsapp.api.ApiService
+import com.geeklord.jobsapp.database.AppDatabase
+import com.geeklord.jobsapp.database.JobsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,5 +33,20 @@ object AppModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit) : ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "jobs_database"
+        ).build()
+    }
+
+    @Provides
+    fun provideProductDao(database: AppDatabase): JobsDao {
+        return database.productDao()
     }
 }

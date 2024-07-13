@@ -2,15 +2,16 @@ package com.geeklord.jobsapp.Paging
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.geeklord.jobsapp.Models.JobDetails
-import com.geeklord.jobsapp.Models.PrimaryDetails
+import com.geeklord.jobsapp.Models.JobsEntity
+import com.geeklord.jobsapp.ViewModels.JobsViewModel
 import com.geeklord.jobsapp.databinding.JobItemBinding
-import com.google.android.material.snackbar.Snackbar
 
-class JobsPagingAdapter(private val onClick : (JobDetails) -> Unit) : PagingDataAdapter<JobDetails, JobsPagingAdapter.JobsViewHolder> (ComparatorDiffUtil()){
+class JobsPagingAdapter(private val onClick : (JobDetails) -> Unit, private val viewModel: JobsViewModel) : PagingDataAdapter<JobDetails, JobsPagingAdapter.JobsViewHolder> (ComparatorDiffUtil()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobsViewHolder {
         val binding = JobItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return JobsViewHolder(binding)
@@ -31,6 +32,21 @@ class JobsPagingAdapter(private val onClick : (JobDetails) -> Unit) : PagingData
             binding.root.setOnClickListener{
                 onClick(result)
 
+            }
+
+            binding.saveBtn.setOnClickListener {
+                val savedJobs = JobsEntity(
+                    title = result.title,
+                    companyName = result.companyName,
+                    salary = result.primaryDetails.salary,
+                    place = result.primaryDetails.place,
+                    jobType = result.primaryDetails.jobType,
+                    experience = result.primaryDetails.experience,
+                    qualification = result.primaryDetails.qualification,
+                    jobRole = result.jobRole
+                )
+                viewModel.savedJobLocally(savedJobs)
+                Toast.makeText(binding.root.context, "Job Bookmarked", Toast.LENGTH_SHORT).show()
             }
         }
 

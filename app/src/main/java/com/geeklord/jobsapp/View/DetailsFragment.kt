@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import com.geeklord.jobsapp.Models.JobDetails
+import com.geeklord.jobsapp.Models.JobsEntity
 import com.geeklord.jobsapp.Models.PrimaryDetails
 import com.geeklord.jobsapp.databinding.FragmentDetailsBinding
 import com.google.android.material.snackbar.Snackbar
@@ -22,6 +23,7 @@ class DetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var itemData : JobDetails? = null
+    private var offlineitemData : JobsEntity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,11 +36,20 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setData()
+
+        val source = arguments?.getString("source")
+        when(source){
+            "JobsFragment" -> {
+                setJobData()
+            }
+            "SavedJobsFragment" -> {
+                setOfflineJobData()
+            }
+        }
 
     }
 
-    private fun setData() {
+    private fun setJobData() {
         val json = arguments?.getString("jobData")
         if(json != null){
             itemData = Gson().fromJson(json, JobDetails::class.java)
@@ -49,6 +60,27 @@ class DetailsFragment : Fragment() {
                 binding.tvJobType.text = "Job Type : ${item.primaryDetails.jobType}"
                 binding.tvExperience.text = "Experience : ${item.primaryDetails.experience}"
                 binding.tvQualification.text = "Qualification : ${item.primaryDetails.qualification}"
+                binding.tvCompanyName.text = "Company : ${item.companyName}"
+                binding.tvJobRole.text = "Job Role : ${item.jobRole}"
+
+            }
+        }
+        else{
+            Snackbar.make(binding.root, "Something went wrong!", Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setOfflineJobData() {
+        val json = arguments?.getString("savedJobData")
+        if(json != null){
+            offlineitemData = Gson().fromJson(json, JobsEntity::class.java)
+
+            offlineitemData?.let {item ->
+                binding.tvPlace.text = "Place : ${item.place}"
+                binding.tvSalary.text = "Salary : ${item.salary}"
+                binding.tvJobType.text = "Job Type : ${item.jobType}"
+                binding.tvExperience.text = "Experience : ${item.experience}"
+                binding.tvQualification.text = "Qualification : ${item.qualification}"
                 binding.tvCompanyName.text = "Company : ${item.companyName}"
                 binding.tvJobRole.text = "Job Role : ${item.jobRole}"
 
